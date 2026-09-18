@@ -1,10 +1,50 @@
 ---
+import { site } from "../config/site";
+
 interface Props {
 	title: string;
 	description: string;
+	/** Imagen para compartir. Por defecto la del sitio. */
+	image?: string;
+	/** Paginas como el 404 no deben indexarse. */
+	noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = site.ogImage, noindex = false } = Astro.props;
+
+// Astro.site viene de `site` en astro.config.mjs: con el trailing slash de
+// Astro.url.pathname, new URL() produce siempre la URL absoluta correcta.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+
+// Datos estructurados: ayudan a que Google entienda quienes somos y donde
+// estamos, que es lo que pesa en las busquedas locales.
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "ProfessionalService",
+	"@id": `${site.url}/#organizacion`,
+	name: site.name,
+	url: site.url,
+	image: ogImage,
+	email: site.email,
+	telephone: site.phone.display,
+	description:
+		"Implementacion de Odoo ERP, facturacion electronica DTE y desarrollo de software a la medida para empresas de El Salvador.",
+	address: {
+		"@type": "PostalAddress",
+		addressLocality: "San Miguel",
+		addressCountry: "SV",
+	},
+	areaServed: { "@type": "Country", name: "El Salvador" },
+	sameAs: [site.social.facebook, site.social.instagram],
+	knowsAbout: [
+		"Odoo ERP",
+		"Facturacion electronica DTE",
+		"Migraciones Odoo",
+		"Hosting Odoo",
+		"Desarrollo de software a la medida",
+	],
+};
 ---
 
 <!DOCTYPE html>
@@ -15,7 +55,29 @@ const { title, description } = Astro.props;
 	<meta name="theme-color" content="#011e41" />
 	<title>{title}</title>
 	<meta name="description" content={description} />
+	<link rel="canonical" href={canonical} />
+	{noindex && <meta name="robots" content="noindex, follow" />}
+
+	<!-- Open Graph: es lo que arma la vista previa al compartir por WhatsApp o Facebook. -->
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={site.name} />
+	<meta property="og:locale" content="es_SV" />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:image" content={ogImage} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={`${site.name} — ${description}`} />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={ogImage} />
+
 	<link rel="icon" href="/img/icons/landing/codefactory.ico" sizes="any">
+	<link rel="apple-touch-icon" href="/img/logo-codefactory.png">
+	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />

@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const destinos = [
+	{ label: "Implementación de Odoo ERP", href: "/soluciones/odoo" },
+	{ label: "Facturación electrónica DTE", href: "/soluciones/facturacion-dte" },
+	{ label: "Retail y POS", href: "/verticales/retail" },
+	{ label: "Talleres automotrices", href: "/verticales/talleres" },
+	{ label: "Ferreterías y distribución", href: "/verticales/ferreterias" },
+	{ label: "Mascotas y acuarios", href: "/verticales/mascotas" },
+];
+---
+
+<Layout
+	title="Página no encontrada · CodeFactory"
+	description="La página que buscás no existe o cambió de dirección. Te dejamos los accesos principales de CodeFactory."
+	noindex
+>
+	<Header />
+	<main class="nf">
+		<div class="wrap nf-inner">
+			<span class="kicker dark">Error 404</span>
+			<h1>Esta página no existe o cambió de dirección.</h1>
+			<p class="sub">Puede que el enlace esté viejo o tenga un error de escritura. Desde acá llegás a lo que buscabas.</p>
+			<div class="nf-actions">
+				<a href="/" class="btn btn-navy">Volver al inicio</a>
+				<a href="/#contacto" class="btn btn-ghost">Hablar con nosotros</a>
+			</div>
+			<div class="nf-links">
+				<span>Lo más visitado</span>
+				<ul>
+					{destinos.map((d) => <li><a href={d.href}>{d.label}</a></li>)}
+				</ul>
+			</div>
+		</div>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+.nf{background:var(--gray-bg);border-bottom:1px solid var(--gray-line)}
+.nf-inner{padding:120px 0 110px;max-width:760px}
+.nf h1{font-size:clamp(30px,4.2vw,46px);font-weight:800;margin-top:6px}
+.nf .sub{margin-bottom:36px}
+.nf-actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--gray-line)}
+.btn-ghost:hover{border-color:var(--navy)}
+.nf-links{margin-top:56px;padding-top:32px;border-top:1px solid var(--gray-line)}
+.nf-links span{display:block;font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-text);margin-bottom:18px}
+.nf-links ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 32px}
+.nf-links a{font-size:15px;font-weight:600;color:var(--navy)}
+.nf-links a:hover{color:#0084b8;text-decoration:underline;text-underline-offset:3px}
+
+@media (max-width:600px){
+  .nf-inner{padding:76px 0 68px}
+  .nf-links ul{grid-template-columns:1fr}
+}
+</style>

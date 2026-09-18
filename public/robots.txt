@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://codefactory.lat/sitemap-index.xml
