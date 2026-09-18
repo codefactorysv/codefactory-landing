@@ -26,6 +26,7 @@ export const site = {
 // en todas y evita que una quede desfasada.
 export const trackRecord = {
 	years: 2,
+	projects: 8,
 	clients: 4,
 } as const;
 
