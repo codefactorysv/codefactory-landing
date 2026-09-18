@@ -1,13 +1,19 @@
 const toggle = document.getElementById("navToggle");
 const links = document.getElementById("navLinks");
 
+function setMenu(open: boolean) {
+	links?.classList.toggle("open", open);
+	toggle?.setAttribute("aria-expanded", String(open));
+	toggle?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+}
+
 toggle?.addEventListener("click", () => {
-	links?.classList.toggle("open");
+	setMenu(!links?.classList.contains("open"));
 });
 
 links?.addEventListener("click", (e) => {
 	if ((e.target as HTMLElement).tagName === "A") {
-		links.classList.remove("open");
+		setMenu(false);
 	}
 });
 
@@ -28,11 +34,22 @@ navItems.forEach((item) => {
 });
 
 document.addEventListener("click", (e) => {
-	if (!(e.target as HTMLElement).closest(".nav-item")) {
-		navItems.forEach((item) => {
-			item.classList.remove("open");
-			item.querySelector(".drop-trigger")?.setAttribute("aria-expanded", "false");
-		});
+	if (!(e.target as HTMLElement).closest(".nav-item")) closeDropdowns();
+});
+
+function closeDropdowns() {
+	navItems.forEach((item) => {
+		item.classList.remove("open");
+		item.querySelector(".drop-trigger")?.setAttribute("aria-expanded", "false");
+	});
+}
+
+document.addEventListener("keydown", (e) => {
+	if (e.key !== "Escape") return;
+	closeDropdowns();
+	if (links?.classList.contains("open")) {
+		setMenu(false);
+		toggle?.focus();
 	}
 });
 
@@ -73,18 +90,3 @@ const io = new IntersectionObserver(
 	{ threshold: 0.18 }
 );
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
-const newsBtn = document.getElementById("newsBtn") as HTMLButtonElement | null;
-const newsEmail = document.getElementById("newsEmail") as HTMLInputElement | null;
-
-newsBtn?.addEventListener("click", () => {
-	if (!newsEmail) return;
-	if (newsEmail.value && newsEmail.value.indexOf("@") > 0) {
-		newsBtn.textContent = "¡Suscrito! ✓";
-		newsBtn.disabled = true;
-		newsEmail.disabled = true;
-	} else {
-		newsEmail.style.borderColor = "#ff6b6b";
-		newsEmail.focus();
-	}
-});
