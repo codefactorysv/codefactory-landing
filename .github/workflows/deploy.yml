@@ -1,0 +1,66 @@
+# Compila el sitio y lo publica en GitHub Pages en cada push a main.
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite lanzarlo a mano desde la pestaña Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan dos pushes seguidos, el segundo espera en vez de pisar al primero.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Activa Pages en el repo la primera vez, para no tener que hacerlo a mano.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22 # package.json exige >=22.12
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Se configuran en Settings > Secrets and variables > Actions > Variables.
+          # Si no existen, el sitio compila igual: el formulario cae a WhatsApp
+          # y la analitica no se carga.
+          PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
+
+      # Esta publicacion es solo una vista previa mientras se trabaja: el sitio
+      # definitivo ira a un VPS. Se bloquea la indexacion para que la preview no
+      # compita en Google con el sitio real. Solo se toca lo compilado, no el
+      # codigo fuente, asi que el build para el VPS mantiene su robots.txt real.
+      - name: Impedir que se indexe la vista previa
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+          rm -f dist/sitemap-index.xml dist/sitemap-0.xml
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
