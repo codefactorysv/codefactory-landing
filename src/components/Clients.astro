@@ -4,8 +4,7 @@
 const clients = [
 	{ name: "Acuario Exotic Fantasy", logo: "/img/clientes/cliente-acuario-exotic-fantasy.png", w: 414, h: 240 },
 	{ name: "Servi Llantas Súper Marios", logo: "/img/clientes/cliente-servi-llantas-super-marios.png", w: 318, h: 240 },
-	{ name: "MundoToys", logo: null },
-	{ name: "Ferretería SapoteDulce", logo: null },
+	{ name: "MundoToys", logo: "/img/clientes/cliente-mundotoys.png", w: 1027, h: 240 },
 ];
 
 // El carrusel necesita la lista duplicada para que el bucle no tenga corte visible.
@@ -43,7 +42,7 @@ const track = [...clients, ...clients];
 .marquee-track{display:flex;gap:80px;align-items:center;width:max-content;animation:scroll 28s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
 @keyframes scroll{to{transform:translateX(-50%)}}
-.marquee img{height:120px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.65;transition:filter .25s ease,opacity .25s ease}
+.marquee img{height:120px;width:auto;max-width:300px;object-fit:contain;filter:grayscale(1);opacity:.65;transition:filter .25s ease,opacity .25s ease}
 .marquee img:hover{filter:none;opacity:1}
 .wordmark{white-space:nowrap;font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--gray-text);opacity:.65;transition:color .25s ease,opacity .25s ease}
 .wordmark:hover{color:var(--navy);opacity:1}
@@ -52,7 +51,7 @@ const track = [...clients, ...clients];
   .marquee-track{animation:none}
 }
 @media (max-width:600px){
-  .marquee img{height:84px}
+  .marquee img{height:84px;max-width:210px}
   .wordmark{font-size:20px}
   .marquee-track{gap:48px}
 }
