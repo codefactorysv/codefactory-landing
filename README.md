@@ -54,6 +54,23 @@ Para activar el envío por correo:
    `PUBLIC_WEB3FORMS_KEY`. Al ser una variable `PUBLIC_`, se incrusta en el
    build, así que hay que volver a desplegar para que tome efecto.
 
+## Analítica
+
+Google Analytics 4 se activa poniendo el identificador de medición
+(`G-XXXXXXXXXX`) en `PUBLIC_GA_ID`, en local vía `.env` y en Netlify vía
+**Site configuration → Environment variables**. Sin esa variable el sitio no
+carga nada de Google ni instala cookies. Solo se activa en builds de
+producción, así que `npm run dev` no ensucia las métricas.
+
+El formulario de contacto envía un evento `generate_lead` cuando un envío se
+completa, con `method` en `formulario` o `whatsapp` según por dónde salió, y el
+tipo de necesidad que eligió el visitante. En GA4 conviene marcarlo como
+conversión en **Admin → Eventos**.
+
+Al usar GA4 el sitio instala cookies de analítica. Si en algún momento reciben
+tráfico de la Unión Europea o del Reino Unido, va a hacer falta un aviso de
+cookies con consentimiento previo; para tráfico local no es exigible hoy.
+
 ## Despliegue
 
 El sitio se publica en Netlify. La configuración vive en `netlify.toml`:
