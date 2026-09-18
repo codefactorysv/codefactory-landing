@@ -1,4 +1,5 @@
 ---
+import { trackRecord } from "../../config/site";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/shared/PageHero.astro";
@@ -23,8 +24,8 @@ const modules = [
 ];
 
 const whyMetrics = [
-	{ count: 10, prefix: "+", label: "años de experiencia" },
-	{ count: 4, suffix: "+", label: "empresas en producción" },
+	{ count: trackRecord.years, label: "años de experiencia" },
+	{ count: trackRecord.clients, suffix: "+", label: "empresas en producción" },
 	{ count: 100, suffix: "%", label: "DTE con normativa vigente" },
 	{ count: 24, suffix: "/7", label: "soporte y monitoreo" },
 ];
