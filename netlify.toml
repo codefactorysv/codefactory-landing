@@ -1,0 +1,36 @@
+# Despliegue del sitio estatico de CodeFactory en Netlify.
+# El build genera dist/ y Netlify lo sirve tal cual; no hace falta adaptador
+# porque Astro esta en modo static.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # package.json exige node >=22.12.0
+  NODE_VERSION = "22"
+
+# Las previews de pull request usan el mismo build.
+[context.deploy-preview]
+  command = "npm run build"
+
+# Astro pone un hash en el nombre de cada asset, asi que cambiar un archivo
+# cambia su URL: se pueden cachear indefinidamente sin riesgo de servir viejo.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# El HTML y las imagenes de public/ no llevan hash en el nombre: se dejan con
+# la revalidacion por ETag que Netlify aplica por defecto, para que al
+# reemplazar un logo el cambio se vea de inmediato.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Netlify sirve 404.html automaticamente para rutas inexistentes,
+# por eso no hace falta una regla de redireccion.
