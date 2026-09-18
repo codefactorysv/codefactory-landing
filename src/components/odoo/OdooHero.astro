@@ -1,4 +1,5 @@
 ---
+import { trackRecord } from "../../config/site";
 const odooApps = [
 	{ icon: "◈", label: "CRM" },
 	{ icon: "▤", label: "Contabilidad" },
@@ -21,7 +22,7 @@ const odooApps = [
 		</div>
 		<div class="feature-card reveal">
 			<span class="tag">Clientes en producción</span>
-			<div class="odoo-stat">+4</div>
+			<div class="odoo-stat">{trackRecord.clients}+</div>
 			<p class="odoo-stat-label">empresas en producción</p>
 			<div class="odoo-app-chips">
 				{odooApps.map((app) => (
