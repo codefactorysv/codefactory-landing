@@ -1,12 +1,10 @@
 ---
-import { trackRecord } from "../../config/site";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/shared/PageHero.astro";
 import MockCard from "../../components/shared/MockCard.astro";
 import FeatureGrid from "../../components/shared/FeatureGrid.astro";
 import ModuleChips from "../../components/shared/ModuleChips.astro";
-import StatsBand from "../../components/shared/StatsBand.astro";
 import Cta from "../../components/Cta.astro";
 import Footer from "../../components/Footer.astro";
 
@@ -23,12 +21,6 @@ const modules = [
 	{ name: "Módulos incluidos", apps: ["Punto de Venta", "Inventario", "Facturación electrónica", "Órdenes de servicio", "Contabilidad", "Reportes"] },
 ];
 
-const whyMetrics = [
-	{ count: trackRecord.years, label: "años de experiencia" },
-	{ count: trackRecord.clients, suffix: "+", label: "empresas en producción" },
-	{ count: 100, suffix: "%", label: "DTE con normativa vigente" },
-	{ count: 24, suffix: "/7", label: "soporte y monitoreo" },
-];
 ---
 
 <Layout
@@ -72,7 +64,6 @@ const whyMetrics = [
 
 	<ModuleChips kicker="Módulos incluidos" title="Un sistema, todas las áreas de tu tienda" categories={modules} note="Sumamos más módulos según cómo crezca tu operación." />
 
-	<StatsBand kicker="Resultados que respaldan la propuesta" title="Por qué CodeFactory" items={whyMetrics} />
 
 	<Cta />
 	<Footer />

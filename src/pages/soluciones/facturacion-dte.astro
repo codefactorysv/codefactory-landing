@@ -1,12 +1,10 @@
 ---
-import { trackRecord } from "../../config/site";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/shared/PageHero.astro";
 import MockCard from "../../components/shared/MockCard.astro";
 import FeatureGrid from "../../components/shared/FeatureGrid.astro";
 import DteSection from "../../components/DteSection.astro";
-import StatsBand from "../../components/shared/StatsBand.astro";
 import Cta from "../../components/Cta.astro";
 import Footer from "../../components/Footer.astro";
 
@@ -20,12 +18,6 @@ const features = [
 	{ icon: "⚙", title: "Integración nativa al sistema", desc: "El facturador vive dentro de tu sistema — no es un conector externo frágil." },
 ];
 
-const whyMetrics = [
-	{ count: trackRecord.years, label: "años de experiencia" },
-	{ count: trackRecord.clients, suffix: "+", label: "empresas en producción" },
-	{ count: 100, suffix: "%", label: "DTE con normativa vigente" },
-	{ count: 24, suffix: "/7", label: "soporte y monitoreo" },
-];
 ---
 
 <Layout
@@ -78,7 +70,6 @@ const whyMetrics = [
 
 	<DteSection />
 
-	<StatsBand kicker="Lo que nos respalda" title="Por qué CodeFactory" items={whyMetrics} />
 
 	<Cta />
 	<Footer />
